@@ -11,7 +11,7 @@ The perfect afterparty :tada: for python aficionados :snake: working with the KI
    <img src="docs/camera.gif" alt="Camera" title="Camera" width="600px"/>
    <img src="docs/kitti_3d.gif" alt="Spatial (3D)" title="Spatial (3D)" width="300px"/>
    <img src="docs/kitti_2d.gif" alt="Planar (3D)" title="Planar (3D)" width="300px"/>
-   <p><em>Sample 2011_09_26_drive_0005  from the KITTI dataset. <br>Top: Camera data from the sample. <br>Bottom: Associated point cloud (3D left and 2D right), car pose and trajectory in numpy/matplotlib</em></p>
+   <p><em>Sample 2011_09_26_drive_0005  from the KITTI dataset. <br>Top: Camera data from the sample. <br>Bottom: Associated point cloud, car pose and trajectory in numpy & matplotlib (3D left and 2D right)</em></p>
 </div>
 
 <!-- 2011_09_26_drive_0005 -->
