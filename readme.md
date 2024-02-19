@@ -33,12 +33,6 @@ export AFTERKITTI_PATH=/path_to_afterKITTI
 export PYTHONPATH=$PYTHONPATH:/$AFTERKITTI_PATH
 ```
 
-A of the dataset ([2011_09_23_drive_0005](https://s3.eu-central-1.amazonaws.com/avg-kitti/raw_data/2011_09_26_drive_0005/2011_09_26_drive_0005_sync.zip)) has already been preprocessed for you, and is available in the [data/rosbags](data/rosbags) folder. You can load and visualize it with the following commands:
-
-```bash
-   python afterkitti/load_and_visualize.py
-```
-
 ## Usage
 
 You can convert any of the [raw data](https://www.cvlibs.net/datasets/kitti/raw_data.php) provided in KITTI by following this procedure:
@@ -60,3 +54,9 @@ You can convert any of the [raw data](https://www.cvlibs.net/datasets/kitti/raw_
    ```
 
    This will generate a `pickle` file in the [data/pickles](data/rosbags) folder.
+
+3. **Import and visualize the dataset** as follows:
+
+   ```bash
+      python afterkitti/load_and_visualize.py
+   ```
