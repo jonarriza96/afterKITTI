@@ -1,0 +1,9 @@
+opencv-python
+pykitti
+kitti2bag
+pyyaml
+rospkg
+pycryptodomex
+gnupg
+matplotlib
+scipy
