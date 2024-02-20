@@ -35,33 +35,62 @@ car_q = []
 car_t = []
 for topic, msg, t in bag.read_messages(topics=["/tf_static"]):
     for tr in msg.transforms:
-        if tr.header.frame_id != "imu_link":
-            # print("hello")
+        if tr.header.frame_id == "imu_link":
             car_p += [
                 np.array(
                     [
-                        msg.transforms[0].transform.translation.x,
-                        msg.transforms[0].transform.translation.y,
-                        msg.transforms[0].transform.translation.z,
+                        tr.transform.translation.x,
+                        tr.transform.translation.y,
+                        tr.transform.translation.z,
                     ]
                 ),
             ]
             car_q += [
                 np.array(
                     [
-                        msg.transforms[0].transform.rotation.w,
-                        msg.transforms[0].transform.rotation.x,
-                        msg.transforms[0].transform.rotation.y,
-                        msg.transforms[0].transform.rotation.z,
+                        tr.transform.rotation.w,
+                        tr.transform.rotation.x,
+                        tr.transform.rotation.y,
+                        tr.transform.rotation.z,
                     ]
                 ),
             ]
             car_t += [t.to_sec()]
+world_p = []
+world_q = []
+world_t = []
+for topic, msg, t in bag.read_messages(topics=["/tf"]):
+    for tr in msg.transforms:
+        if tr.header.frame_id == "world":
+            world_p += [
+                np.array(
+                    [
+                        tr.transform.translation.x,
+                        tr.transform.translation.y,
+                        tr.transform.translation.z,
+                    ]
+                ),
+            ]
+            world_q += [
+                np.array(
+                    [
+                        tr.transform.rotation.w,
+                        tr.transform.rotation.x,
+                        tr.transform.rotation.y,
+                        tr.transform.rotation.z,
+                    ]
+                ),
+            ]
+            world_t += [t.to_sec()]
 
 
 car_p = np.squeeze(car_p)
 car_q = np.squeeze(car_q)
 car_t = np.squeeze(car_t) - car_t[0]
+
+world_p = np.squeeze(world_p)
+world_q = np.squeeze(world_q)
+world_t = np.squeeze(world_t) - world_t[0]
 
 # --------------------------------- GPS data --------------------------------- #
 gps_v = []
@@ -87,6 +116,7 @@ print("Done.")
 #                                Save to pickle                                #
 # ---------------------------------------------------------------------------- #
 data = {
+    "world": {"p": world_p, "q": world_q, "t": world_t},
     "car": {"p": car_p, "q": car_q, "t": car_t},
     "pcl": {"pcl": pcl, "t": pcl_t},
     "imu": {"yaw": imu_yaw},

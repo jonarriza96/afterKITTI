@@ -105,3 +105,90 @@ def plot_frames(
             )
 
     return ax
+
+
+def plotkitti_2d(frame, pcl_sample, car_p_sample, car_R_sample, car_traj, time):
+    frame = frame + 2
+    plt.clf()
+    fig = plt.gcf()
+    ax = fig.gca()
+    ax.scatter(
+        pcl_sample[:, 0],
+        pcl_sample[:, 1],
+        c=-(pcl_sample[:, 0] ** 2 + pcl_sample[:, 1] ** 2 + pcl_sample[:, 2] ** 2),
+        cmap="turbo",
+        alpha=0.25,
+        marker=".",
+    )
+
+    plot_frames(
+        car_p_sample[None, :],
+        car_R_sample[None, :, 0],
+        car_R_sample[None, :, 1],
+        car_R_sample[None, :, 2],
+        ax=ax,
+        scale=3,
+        planar=True,
+    )
+
+    ax.plot(car_traj[:frame, 0], car_traj[:frame, 1], "-m", alpha=1)
+    ax.plot(car_traj[frame:, 0], car_traj[frame:, 1], "-m", alpha=0.2)
+
+    ax.set_xlim(-60, 60)
+    ax.set_ylim(-100, 80)
+    ax.set_aspect("equal")
+    ax.set_axis_off()
+
+    plt.title("Frame: " + str(frame) + ", Time: " + str(time) + "s")
+
+
+def plotkitti_3d(frame, pcl_sample, car_p_sample, car_R_sample, car_traj, time):
+    frame = frame + 2
+
+    plt.clf()
+    fig = plt.gcf()
+    ax = fig.add_subplot(111, projection="3d")
+    ax.view_init(elev=33, azim=143, roll=0)
+    ax.scatter(
+        pcl_sample[:, 0],
+        pcl_sample[:, 1],
+        pcl_sample[:, 2],
+        c=-(pcl_sample[:, 0] ** 2 + pcl_sample[:, 1] ** 2),
+        cmap="turbo",
+        alpha=0.25,
+        marker=".",
+    )
+
+    plot_frames(
+        car_p_sample[None, :],
+        car_R_sample[None, :, 0],
+        car_R_sample[None, :, 1],
+        car_R_sample[None, :, 2],
+        ax=ax,
+        scale=3,
+    )
+
+    ax.plot(
+        car_traj[:frame, 0], car_traj[:frame, 1], car_traj[:frame, 2], "-m", alpha=1
+    )
+    ax.plot(
+        car_traj[frame:, 0], car_traj[frame:, 1], car_traj[frame:, 2], "-m", alpha=0.2
+    )
+
+    # indx_in = np.argwhere((pcl_sample[:, 0] > -60) & (pcl_sample[:, 0] < 60))[:, 0]
+    # indy_in = np.argwhere((pcl_sample[:, 1] > -100) & (pcl_sample[:, 1] < 80))[:, 0]
+    # indz_in = np.argwhere((pcl_sample[:, 2] > -2) & (pcl_sample[:, 2] < 2))[:, 0]
+    ax = axis_equal(pcl_sample[:, 0], pcl_sample[:, 1], pcl_sample[:, 2], ax)
+    ax.set_axis_off()
+
+    plt.title("Frame: " + str(frame) + ", Time: " + str(time) + "s")
+
+
+def save_animation(animation, file_name):
+    file_path = get_afterkitti_path() + "/docs/" + file_name + ".gif"
+    print("Saving animation ", file_name, "...")
+    animation.save(
+        file_path,
+        writer="ffmpeg",
+    )
+    print("Done. Animation saved in ", file_path)
